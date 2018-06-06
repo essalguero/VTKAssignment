@@ -7,6 +7,8 @@ reader.SetFileName("Wind.vtk")
 reader.Update()
 
 a,b = reader.GetOutput().GetScalarRange()
+print(a)
+print(b)
 xmi, xma, ymi, yma, zmi, zma = reader.GetOutput().GetBounds()
 
 ctf = vtk.vtkLookupTable()
@@ -21,8 +23,8 @@ plane = vtk.vtkPlaneSource()
 plane.SetOrigin(xmi,math.ceil(ymi),zmi)
 plane.SetPoint1(xma,math.ceil(ymi),zmi)
 plane.SetPoint2(xmi,math.ceil(ymi),zma)
-plane.SetXResolution(4)
-plane.SetYResolution(6)
+plane.SetXResolution(4 * 4)
+plane.SetYResolution(6 * 2)
 plane.Update()
 
 
@@ -33,9 +35,23 @@ stream.SetIntegrationDirectionToForward()
 stream.SetIntegrator(vtk.vtkRungeKutta4())
 #stream.SetStepLength(0.05)
 
-stream.SetInitialIntegrationStep(0.02)
+'''stream.SetInitialIntegrationStep(0.02)
 stream.SetMinimumIntegrationStep(0.05)
+stream.SetMaximumIntegrationStep(400000)
+stream.SetMaximumPropagation(400000)
+'''
+
+stream.SetInitialIntegrationStep(0.1)
+stream.SetMinimumIntegrationStep(10)
+'''stream.SetMaximumIntegrationStep(10000)
+stream.SetMaximumPropagation(1000000)
+'''
+
 stream.SetMaximumIntegrationStep(10)
+stream.SetMaximumPropagation(10000)
+
+
+stream.SetComputeVorticity(True)
 
 print(stream)
 
@@ -67,16 +83,16 @@ boundingBoxMapper = vtk.vtkPolyDataMapper()
 boundingBoxMapper.SetInputConnection(boundingBox.GetOutputPort())
 boundingBoxActor = vtk.vtkActor()
 boundingBoxActor.SetMapper(boundingBoxMapper)
-boundingBoxActor.GetProperty().SetColor(0.0,0.0,1.0)
+boundingBoxActor.GetProperty().SetColor(0.9, 0.9, 0.9)
 boundingBoxActor.GetProperty().SetLineWidth(2.0)
 
 ren = vtk.vtkRenderer()
-ren.SetBackground(0.2, 0.2, 0.2)
+ren.SetBackground(0.2, 0.2, 0.4)
 ren.AddActor(streamActor)
 ren.AddActor(boundingBoxActor)
 renWin = vtk.vtkRenderWindow()
 renWin.AddRenderer(ren)
-renWin.SetWindowName("Wind as Streamlines")
+renWin.SetWindowName("Wind")
 renWin.SetSize(800, 600)
 iren = vtk.vtkRenderWindowInteractor()
 iren.SetRenderWindow(renWin)

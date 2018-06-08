@@ -130,21 +130,11 @@ renderer.AddActor(actor)
 
 # Crear el bounding box
 boundingBox = vtk.vtkOutlineFilter()
-
-# La forma de crearlo depende de la version de vtk
-if vtk.VTK_MAJOR_VERSION <= 5:
-    boundingBox.SetInputData(tubeFilter)
-else:
-    boundingBox.SetInputConnection(tubeFilter.GetOutputPort())
+boundingBox.SetInputConnection(tubeFilter.GetOutputPort())
 
 # Crear su mapper
 mapper = vtk.vtkPolyDataMapper()
-
-# La forma de asociar el boundingbox al mapper depende de la version de vtk
-if vtk.VTK_MAJOR_VERSION <= 5:
-    mapper.SetInput(boundingBox.GetOutput())
-else:
-    mapper.SetInputConnection(boundingBox.GetOutputPort())
+mapper.SetInputConnection(boundingBox.GetOutputPort())
 
 # Crear el actor para añadirlo al renderer
 actor = vtk.vtkActor()

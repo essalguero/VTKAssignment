@@ -26,8 +26,8 @@ def Keypress(obj, event):
 reader = vtk.vtkStructuredPointsReader()
 reader.SetFileName("hydrogen.vtk")
 
-# Crear una LUT para los colores a utilizar en funcion del valor
-lut=vtk.vtkColorTransferFunction()
+# Crear una tabla para los colores a utilizar en funcion del valor
+lut = vtk.vtkColorTransferFunction()
 lut.AddRGBPoint(0,1,0,0)
 lut.AddRGBPoint(0.5,1,1,0)
 lut.AddRGBPoint(1,0,1,0)
@@ -40,7 +40,7 @@ isosurface = vtk.vtkContourFilter()
 isosurface.SetInputConnection(reader.GetOutputPort())
 isosurface.SetValue(0,isosurface_value)
 
-# Crear un mapper para la isosuperficie
+# Crear un mapper para la isosuperficie y conectarla con los datos
 isosurfaceMapper = vtk.vtkPolyDataMapper()
 isosurfaceMapper.SetInputConnection(isosurface.GetOutputPort())
 
@@ -48,9 +48,9 @@ isosurfaceMapper.SetInputConnection(isosurface.GetOutputPort())
 isosurfaceActor = vtk.vtkActor()
 isosurfaceActor.SetMapper(isosurfaceMapper)
 
-
-# Set the LookupTable of the isosurface
+# Fijar la tabla para los colores
 isosurfaceMapper.SetLookupTable(lut)
+
 
 # Crear propiedades para mostrar el valor de la isosuperficie
 text_props = vtk.vtkTextProperty()

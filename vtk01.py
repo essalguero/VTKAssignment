@@ -104,10 +104,6 @@ for i in range(0, points.GetNumberOfPoints()):
     renderer.AddActor(actor)
 
 
-
-# In[11]:
-
-
 # vtkPolyData represents a geometric structure consisting of vertices, lines, polygons, and/or triangle strips
 polygon = vtk.vtkPolyData()
 polygon.SetPoints(points)
@@ -175,5 +171,3 @@ iren = vtk.vtkRenderWindowInteractor()
 iren.SetRenderWindow(renWin)
 iren.Initialize()
 iren.Start()
-
-
